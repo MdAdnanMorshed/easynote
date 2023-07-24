@@ -48,7 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemCount: state.notes.length,
                 itemBuilder: (_, index) {
                   var data = state.notes[index];
-                  return ListTile(title: Text(data.toString()));
+                  return ListTile(
+                      onTap: ()=>BlocProvider.of<EasynoteCubit>(context).removeNote(index),
+                      title: Text(data.toString()),
+                      trailing: Icon(Icons.remove_circle,color: Colors.red,),
+                  );
                 });
           },
         )));
