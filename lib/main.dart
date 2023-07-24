@@ -36,25 +36,40 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  TextEditingController noteController=TextEditingController(); 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: (BlocBuilder<EasynoteCubit, EasynoteInitial>(
-          builder: (context, state) {
-            return ListView.builder(
-                itemCount: state.notes.length,
-                itemBuilder: (_, index) {
-                  var data = state.notes[index];
-                  return ListTile(
-                      onTap: ()=>BlocProvider.of<EasynoteCubit>(context).removeNote(index),
-                      title: Text(data.toString()),
-                      trailing: Icon(Icons.remove_circle,color: Colors.red,),
-                  );
-                });
-          },
-        )));
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                controller: noteController,),
+            ),
+            SizedBox(width: 350,child: ElevatedButton(onPressed: ()=>BlocProvider.of<EasynoteCubit>(context).addNote(noteController.text),
+            child: const Text('Add New Note '),
+            ),),
+            Expanded(
+              child: BlocBuilder<EasynoteCubit, EasynoteInitial>(
+                builder: (context, state) {
+                  return ListView.builder(
+                      itemCount: state.notes.length,
+                      itemBuilder: (_, index) {
+                        var data = state.notes[index];
+                        return ListTile(
+                            onTap: ()=>BlocProvider.of<EasynoteCubit>(context).removeNote(index),
+                            title: Text(data.toString()),
+                            trailing: Icon(Icons.remove_circle,color: Colors.red,),
+                        );
+                      });
+                },
+              ),
+            ),
+          ],
+        ));
   }
 }
