@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (context) => EasynoteCubit(),
-        child: MyHomePage(title: 'Flutter Demo Home Page'),
+        child: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
   }
@@ -44,7 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: (BlocBuilder<EasynoteCubit, EasynoteInitial>(
           builder: (context, state) {
-            return Text(state.notes.toString());
+            return ListView.builder(
+                itemCount: state.notes.length,
+                itemBuilder: (_, index) {
+                  var data = state.notes[index];
+                  return ListTile(title: Text(data.toString()));
+                });
           },
         )));
   }
