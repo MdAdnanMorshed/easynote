@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'cubit/easynote_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +18,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BlocProvider(
+        create: (context) => EasynoteCubit(),
+        child: MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
@@ -33,10 +39,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Text('Bloc Cubit '),
-    );
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: (BlocBuilder<EasynoteCubit, EasynoteInitial>(
+          builder: (context, state) {
+            return Text(state.notes.toString());
+          },
+        )));
   }
 }
